@@ -1,5 +1,7 @@
 # text-reminder-skill
 
+![The Settings window, then the full-screen message with a countdown](demo.gif)
+
 An agent skill that builds a small macOS menu bar app. The app shows one text over the full screen at a fixed interval. Use it to keep a motto or a quote in mind during the day.
 
 - The message covers all screens. Input is blocked for 3 seconds.
