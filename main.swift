@@ -4,7 +4,7 @@ import ServiceManagement
 let defaults = UserDefaults.standard
 let kText = "text"
 let kMinutes = "intervalMinutes"
-defaults.register(defaults: [kText: "하고 싶은게 아니라 할 수 있는걸 하자", kMinutes: 60])
+defaults.register(defaults: [kText: "Do what you can, not what you want.", kMinutes: 60])
 let lockSeconds = 3
 
 final class OverlayWindow: NSWindow {
@@ -77,7 +77,7 @@ final class Overlay {
     }
 
     private func updateHint() {
-        let s = remaining > 0 ? "\(remaining)" : "아무 키나 누르거나 클릭하면 닫힙니다"
+        let s = remaining > 0 ? "\(remaining)" : "Press any key or click to close"
         hints.forEach { $0.stringValue = s }
     }
 
@@ -95,8 +95,8 @@ final class Overlay {
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    private let pauseItem = NSMenuItem(title: "일시정지", action: #selector(togglePause), keyEquivalent: "")
-    private let loginItem = NSMenuItem(title: "로그인 시 실행", action: #selector(toggleLogin), keyEquivalent: "")
+    private let pauseItem = NSMenuItem(title: "Pause", action: #selector(togglePause), keyEquivalent: "")
+    private let loginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLogin), keyEquivalent: "")
     private var timer: Timer?
     private var overlay: Overlay?
     private var paused = false
@@ -109,12 +109,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         setUpEditMenu()
         statusItem.button?.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Text Reminder")
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "지금 보기", action: #selector(showNow), keyEquivalent: ""))
-        menu.addItem(NSMenuItem(title: "설정…", action: #selector(openSettings), keyEquivalent: ","))
+        menu.addItem(NSMenuItem(title: "Show Now", action: #selector(showNow), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ","))
         menu.addItem(pauseItem)
         menu.addItem(loginItem)
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         statusItem.menu = menu
         updateLoginItem()
 
@@ -161,7 +161,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func togglePause() {
         paused.toggle()
-        pauseItem.title = paused ? "재개" : "일시정지"
+        pauseItem.title = paused ? "Resume" : "Pause"
         schedule()
     }
 
@@ -207,12 +207,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         textField.widthAnchor.constraint(equalToConstant: 320).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 72).isActive = true
 
-        let interval = NSStackView(views: [hoursField, NSTextField(labelWithString: "시간"), minutesField, NSTextField(labelWithString: "분마다")])
-        let save = NSButton(title: "저장", target: self, action: #selector(saveSettings))
+        let interval = NSStackView(views: [hoursField, NSTextField(labelWithString: "hours"), minutesField, NSTextField(labelWithString: "minutes")])
+        let save = NSButton(title: "Save", target: self, action: #selector(saveSettings))
         save.keyEquivalent = "\r"
         let grid = NSGridView(views: [
-            [NSTextField(labelWithString: "문구"), textField],
-            [NSTextField(labelWithString: "간격"), interval],
+            [NSTextField(labelWithString: "Text"), textField],
+            [NSTextField(labelWithString: "Every"), interval],
             [NSGridCell.emptyContentView, save],
         ])
         grid.rowSpacing = 12
@@ -221,7 +221,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         grid.translatesAutoresizingMaskIntoConstraints = false
 
         let window = NSWindow(contentRect: .zero, styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.title = "Text Reminder 설정"
+        window.title = "Text Reminder Settings"
         window.isReleasedWhenClosed = false
         let view = window.contentView!
         view.addSubview(grid)

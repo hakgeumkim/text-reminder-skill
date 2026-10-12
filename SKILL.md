@@ -15,9 +15,9 @@ This skill builds a native macOS app from source on the user's Mac. Because the 
 - After 3 seconds, any key or mouse click closes the message.
 - The next interval starts when the user closes the message. The interval is not a fixed clock schedule.
 - When the Mac wakes from sleep, the interval starts again. The app does not show reminders that the Mac missed during sleep.
-- Defaults: the text "하고 싶은게 아니라 할 수 있는걸 하자" ("Do what you can, not what you want") and an interval of 60 minutes.
+- Defaults: the text "Do what you can, not what you want." and an interval of 60 minutes.
 
-Menu bar items: Show Now (지금 보기), Settings (설정…), Pause/Resume (일시정지/재개), Launch at Login (로그인 시 실행), Quit (종료). The menu labels are Korean. Change them in `main.swift` if the user wants another language.
+Menu bar items: Show Now, Settings…, Pause/Resume, Launch at Login, Quit. To use another language, change the labels in `main.swift`.
 
 ## Files
 
@@ -35,7 +35,7 @@ Menu bar items: Show Now (지금 보기), Settings (설정…), Pause/Resume (�
 4. If the user wants a different default text, interval, or lock time, edit `main.swift` before the build (see Customization).
 5. Run `./build.sh` in that folder.
 6. Run `pgrep -lx TextReminder` to make sure that the app runs.
-7. Tell the user to click the menu bar icon and select Show Now (지금 보기) to see the message. Do not show the overlay yourself without the user's approval, because it blocks the screen for 3 seconds.
+7. Tell the user to click the menu bar icon and select Show Now to see the message. Do not show the overlay yourself without the user's approval, because it blocks the screen for 3 seconds.
 
 To rebuild after a change, run `./build.sh` again. The script stops the running app before it installs the new one.
 
@@ -51,14 +51,14 @@ All values are in `main.swift`.
 | Background color and opacity | `window.backgroundColor = NSColor.black.withAlphaComponent(0.93)` |
 | Menu bar icon | `NSImage(systemSymbolName: "text.bubble", ...)` |
 
-The user can also change the text and the interval in the Settings window without a rebuild. The app keeps these values in `UserDefaults` with the domain `com.turg.TextReminder`.
+The user can also change the text and the interval in the Settings window without a rebuild. The app keeps these values in `UserDefaults` with the domain `com.hakgeumkim.TextReminder`.
 
 ## Uninstall
 
-1. If Launch at Login (로그인 시 실행) is on, select it in the menu bar menu to turn it off.
-2. Select Quit (종료) in the menu bar menu.
+1. If Launch at Login is on, select it in the menu bar menu to turn it off.
+2. Select Quit in the menu bar menu.
 3. Delete `~/Applications/TextReminder.app`.
-4. Run `defaults delete com.turg.TextReminder` to delete the saved settings.
+4. Run `defaults delete com.hakgeumkim.TextReminder` to delete the saved settings.
 
 ## Known limits
 
