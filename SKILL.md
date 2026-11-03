@@ -15,15 +15,19 @@ This skill builds a native macOS app from source on the user's Mac. Because the 
 - After 3 seconds, any key or mouse click closes the message.
 - The next interval starts when the user closes the message. The interval is not a fixed clock schedule.
 - When the Mac wakes from sleep, the interval starts again. The app does not show reminders that the Mac missed during sleep.
+- Optional Active Hours restrict automatic reminders to a daily range, including overnight hours, in the Mac’s timezone. They are off by default. Show Now remains an unrestricted manual preview.
+- One compact menu row shows the next reminder time. Its tooltip includes the full date, seconds, and scheduling state. See README.md for boundary behavior.
 - Defaults: the text "Do what you can, not what you want." and an interval of 60 minutes.
 
-Menu bar items: Show Now, Settings…, Pause/Resume, Launch at Login, Quit. To use another language, change the labels in `main.swift`.
+Menu bar items: compact next reminder/status, Show Now, Settings…, Pause/Resume, Launch at Login, Quit. To use another language, change the labels in `main.swift`.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `main.swift` | The full app (AppKit, one file) |
+| `main.swift` | AppKit app, settings, overlays, and scheduling lifecycle |
+| `ReminderSchedule.swift` | Daily time-window calculations |
+| `tests/test.sh` | Runs schedule checks without launching the app |
 | `Info.plist` | Bundle settings. `LSUIElement` hides the Dock icon. |
 | `build.sh` | Compiles the app, installs it to `~/Applications/TextReminder.app`, and starts it |
 
@@ -51,7 +55,7 @@ All values are in `main.swift`.
 | Background color and opacity | `window.backgroundColor = NSColor.black.withAlphaComponent(0.93)` |
 | Menu bar icon | `NSImage(systemSymbolName: "text.bubble", ...)` |
 
-The user can also change the text and the interval in the Settings window without a rebuild. The app keeps these values in `UserDefaults` with the domain `com.hakgeumkim.TextReminder`.
+The user can also change the text, interval, and Active Hours in the Settings window without a rebuild. The app keeps these values in `UserDefaults` with the domain `com.hakgeumkim.TextReminder`.
 
 ## Uninstall
 
