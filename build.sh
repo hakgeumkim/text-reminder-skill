@@ -6,7 +6,7 @@ APP="$HOME/Applications/TextReminder.app"
 pkill -x TextReminder || true
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
-swiftc -O main.swift -o "$APP/Contents/MacOS/TextReminder"
+swiftc -O main.swift ReminderSchedule.swift -o "$APP/Contents/MacOS/TextReminder"
 cp Info.plist "$APP/Contents/"
 codesign --force -s - "$APP"
 open "$APP"
